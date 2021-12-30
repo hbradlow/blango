@@ -9,6 +9,9 @@ from blog.models import Post
 from django.utils.safestring import mark_safe
 from django.utils.html import escape, format_html
 
+import logging
+logger = logging.getLogger(__name__)
+
 @register.filter
 def author_details(author: user_model, current_user: user_model = None) -> str:
   if not isinstance(author, user_model):
@@ -42,5 +45,5 @@ def endrow():
 @register.inclusion_tag("blog/post-list.html")
 def recent_posts(post):
   posts = Post.objects.exclude(pk=post.pk).order_by("-published_at")[:5]
-  print(posts)
+  logger.debug("Loaded %d recent posts for post %d", len(posts), post.pk)
   return {"posts": posts, "title": "Recent Posts"}
