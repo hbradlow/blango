@@ -10,6 +10,8 @@ from blog.forms import CommentForm
 import logging
 logger = logging.getLogger(__name__)
 
+from django.urls import reverse
+
 # Create your views here.
 def index(request):
     posts = Post.objects.filter(published_at__lte=timezone.now()).select_related("author")
@@ -52,4 +54,6 @@ def get_ip(request):
   return HttpResponse(request.META['REMOTE_ADDR'])
 
 def post_table(request):
-    return render(request, "blog/post-table.html")
+    return render(
+        request, "blog/post-table.html", {"post_list_url": reverse("post-list")}
+    )
