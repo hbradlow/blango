@@ -1,49 +1,37 @@
-class Greeter {
-  constructor (name) {
-    this.name = name
+class ClickButton extends React.Component {
+  state = {
+    wasClicked: false
   }
 
-  getGreeting () {
-    if (this.name === undefined) {
-      return 'Hello, no name'
-    }
-
-    return 'Hello, ' + this.name
+  handleClick () {
+    this.setState(
+      {wasClicked: true}
+    )
   }
 
-  showGreeting (greetingMessage) {
-    console.log(greetingMessage)
-  }
+  render () {
+    let buttonText
 
-  greet () {
-    this.showGreeting(this.getGreeting())
-  }
-}
+    if (this.state.wasClicked)
+      buttonText = 'Clicked!'
+    else
+      buttonText = 'Click Me'
 
-const g = new Greeter('Patchy')  // Put your name here if you like
-g.greet()
-
-class DelayedGreeter extends Greeter {
-  delay = 2000
-
-  constructor (name, delay) {
-    super(name)
-    if (delay !== undefined) {
-      this.delay = delay
-    }
-  }
-
-  greet () {
-    setTimeout(
-      () => {
-        this.showGreeting(this.getGreeting())
-      }, this.delay
+    return React.createElement(
+      'button',
+      {
+        className: 'btn btn-primary mt-2',
+        onClick: () => {
+          this.handleClick()
+        }
+      },
+      buttonText
     )
   }
 }
 
-const dg2 = new DelayedGreeter('Patchy 2 Seconds')
-dg2.greet()
-
-const dg1 = new DelayedGreeter('Patchy 1 Second', 1000)
-dg1.greet()
+const domContainer = document.getElementById('react_root')
+ReactDOM.render(
+  React.createElement(ClickButton),
+  domContainer
+)
